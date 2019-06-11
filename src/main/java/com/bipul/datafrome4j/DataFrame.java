@@ -35,24 +35,26 @@ public class DataFrame {
 		}
 	}
 
-	public void prettyPrint() {
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
 		for (MetaData metaData : columnMetadata) {
-			System.out.printf("%" + metaData.length + "s | ", metaData.name);
+			stringBuilder.append(String.format("%" + metaData.length + "s | ", metaData.name));
 		}
-		System.out.println();
+		stringBuilder.append(System.lineSeparator());
 		for (MetaData metaData : columnMetadata) {
-			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append("---");
-			for(int i=0; i<metaData.length;++i) {
+			for (int i = 0; i < metaData.length; ++i) {
 				stringBuilder.append("-");
 			}
-			System.out.print(stringBuilder.toString());
 		}
+		stringBuilder.append(System.lineSeparator());
 		for (List<String> record : records) {
 			for (MetaData metaData : columnMetadata) {
-				System.out.printf("%" + metaData.length + "s | ", record.get(metaData.index));
+				stringBuilder.append(String.format("%" + metaData.length + "s | ", record.get(metaData.index)));
 			}
-			System.out.println();
+			stringBuilder.append(System.lineSeparator());
 		}
+		return stringBuilder.toString();
 	}
 }

@@ -12,7 +12,7 @@ public class DataFrameTest {
 	@Test
 	public void test() throws FileNotFoundException, IOException {
 		DataFrame dataFrame = new DataFrame("/Users/bkumar2/git/provider-tools/branding-data-analysis/sample/product-service-mapping.csv");
-		dataFrame.prettyPrint();
+		System.out.print(dataFrame);
 	}
 
 }
