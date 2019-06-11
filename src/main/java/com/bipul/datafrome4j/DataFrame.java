@@ -65,6 +65,24 @@ public class DataFrame {
 		return stringBuilder.toString();
 	}
 
+	public DataFrame columns(int[] indices) {
+		DataFrame subDataFrame = new DataFrame();
+		int length = indices.length;
+		subDataFrame.columnMetadata = new MetaData[length];
+		for (int i = 0; i < length; i++) {
+			subDataFrame.columnMetadata[i] = this.columnMetadata[indices[i]];
+			subDataFrame.columnMetadata[i].index = i;
+		}
+		for (List<String> record : this.records) {
+			List<String> values = new ArrayList<>();
+			for (int i = 0; i < length; i++) {
+				values.add(record.get(indices[i]));
+			}
+			subDataFrame.records.add(values);
+		}
+		return subDataFrame;
+	}
+
 	public DataFrame columns(int startIndex, int endIndex) {
 		return columns(startIndex, endIndex, 1);
 	}
@@ -81,6 +99,29 @@ public class DataFrame {
 			List<String> values = new ArrayList<>();
 			for (int i = startIndex; i < endIndex; i += step) {
 				values.add(record.get(i));
+			}
+			subDataFrame.records.add(values);
+		}
+		return subDataFrame;
+	}
+
+	public DataFrame rows(int[] indices) {
+		DataFrame subDataFrame = new DataFrame();
+		subDataFrame.columnMetadata = new MetaData[this.columnMetadata.length];
+		for (int i = 0; i < subDataFrame.columnMetadata.length; ++i) {
+			subDataFrame.columnMetadata[i] = new MetaData(this.columnMetadata[i]);
+			subDataFrame.columnMetadata[i].length = this.columnMetadata[i].name.length();
+		}
+		int length = indices.length;
+		for (int i = 0; i < length; i++) {
+			List<String> values = new ArrayList<>();
+			List<String> record = this.records.get(indices[i]);
+			for (int j = 0; j < record.size(); j++) {
+				String value = record.get(j);
+				values.add(value);
+				if (subDataFrame.columnMetadata[j].length < value.length()) {
+					subDataFrame.columnMetadata[j].length = value.length();
+				}
 			}
 			subDataFrame.records.add(values);
 		}
